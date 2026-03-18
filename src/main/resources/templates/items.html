@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .filter-form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .filter-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .filter-form select {
+            width: 300px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .filter-form button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .product-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .product-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .product-card .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .product-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .no-products {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Lista de Productos</h1>
+        <a href="/" class="back-link">← Volver al inicio</a>
+    </div>
+
+    <div class="filter-form">
+        <form action="/items" method="get">
+            <label for="category">Filtrar por categoría:</label>
+            <select name="category" id="category">
+                <option value="">Todas las categorías</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat}"
+                        th:text="${cat}"
+                        th:selected="${cat == selectedCategory}">
+                </option>
+            </select>
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
+
+    <div class="products-grid" th:if="${not #lists.isEmpty(items)}">
+        <div class="product-card" th:each="item : ${items}">
+            <h3 th:text="${item.title}">Nombre del producto</h3>
+            <p class="price" th:text="'€' + ${item.price}">€0</p>
+            <p><strong>Categoría:</strong> <span th:text="${item.category}">Categoría</span></p>
+            <p th:if="${item.color}"><strong>Color:</strong> <span th:text="${item.color}">Color</span></p>
+
+            <div class="product-actions">
+                <a th:href="@{'/item/' + ${item.id}}" class="btn btn-detail">Ver detalles</a>
+                <a th:href="@{'/item/' + ${item.id} + '/edit'}" class="btn btn-edit">Editar</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${not #lists.isEmpty(items)}" class="no-products">
+        <p>No hay productos disponibles en esta categoría.</p>
+    </div>
+</div>
+</body>
+</html>

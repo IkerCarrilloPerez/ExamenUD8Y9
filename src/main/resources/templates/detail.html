@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .product-info {
+            margin-bottom: 30px;
+        }
+        .info-row {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            display: inline-block;
+            width: 120px;
+        }
+        .info-value {
+            color: #333;
+        }
+        .price {
+            font-size: 24px;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" th:object="${item}">
+    <div class="header">
+        <h1 th:text="*{title}">Nombre del producto</h1>
+        <a href="/items" class="back-link">← Volver a la lista</a>
+    </div>
+
+    <div class="product-info">
+        <div class="info-row">
+            <span class="info-label">Precio:</span>
+            <span class="info-value price" th:text="'€' + *{price}">€0</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Categoría:</span>
+            <span class="info-value" th:text="*{category}">Categoría</span>
+        </div>
+
+        <div class="info-row" th:if="*{description}">
+            <span class="info-label">Descripción:</span>
+            <span class="info-value" th:text="*{description}">Descripción</span>
+        </div>
+
+        <div class="info-row" th:if="*{color}">
+            <span class="info-label">Color:</span>
+            <span class="info-value" th:text="*{color}">Color</span>
+        </div>
+
+        <div class="info-row" th:if="*{EAN}">
+            <span class="info-label">Código EAN:</span>
+            <span class="info-value" th:text="*{EAN}">123456789</span>
+        </div>
+
+        <div class="info-row" th:if="*{manufacturer}">
+            <span class="info-label">Fabricante:</span>
+            <span class="info-value" th:text="*{manufacturer}">Fabricante</span>
+        </div>
+
+        <div class="info-row" th:if="*{image}">
+            <span class="info-label">Imagen:</span>
+            <div style="margin-top: 10px;">
+                <img th:src="*{image}" alt="Producto" style="max-width: 300px; max-height: 300px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <a th:href="@{'/item/' + *{id} + '/edit'}" class="btn btn-edit">Editar producto</a>
+        <a href="/items" class="btn btn-list">Volver a la lista</a>
+    </div>
+</div>
+</body>
+</html>
